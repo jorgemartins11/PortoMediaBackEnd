@@ -6,16 +6,17 @@ const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.P
     dialect: dbConfig.dialect
 })
 
-class Request extends Model {}
+class User extends Model {}
 
-Request.init({
-    subject: DataTypes.STRING,
-    message: DataTypes.STRING,
-    monthly_price: DataTypes.DOUBLE
-}, { sequelize, modelName: 'request'})
+User.init({
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    phone_number: DataTypes.INTEGER
+}, { sequelize, modelName: 'user'})
 
 sequelize.sync().then().catch(error => {
     console.log("ERROR: " + error + " SYNC REQUEST MODELS"); 
 })
 
-exports.Request = Request;
+exports.User = User;
