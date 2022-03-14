@@ -29,6 +29,7 @@ app.get('/', function (req, res) {
 });
 
 const authController = require('./controllers/auth.controller');
+const contactsController = require('./controllers/contacts.controller');
 
 app.route('/login').post([
     body('email').notEmpty().isEmail(),
@@ -53,6 +54,13 @@ app.route('/register').post([
         authController.register(req, res);
     } else {
         res.status(400).send(errors);
+    }
+})
+
+app.route('/email').get(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        contactsController.sendEmail(req, res);
     }
 })
 
