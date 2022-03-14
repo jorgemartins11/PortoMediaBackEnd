@@ -49,7 +49,7 @@ const sendEmail = (req, res) => {
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"Fred Foo 👻" <foo@example.com>', // sender address
-            to: "znaagapvp@gmail.com", // list of receivers
+            to: "jorge.daniel11@outlook.com", // list of receivers
             subject: "Hello ✔", // Subject line
             text: "Hello world?", // plain text body
             html: "<b>Hello world?</b>", // html body
@@ -64,6 +64,8 @@ const sendEmail = (req, res) => {
     }
 
     main().catch(console.error);
+
+    res.status(200).json({message: "Email enviado!"})
 
 }
 

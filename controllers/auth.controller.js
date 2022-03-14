@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
         user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8),
+            password: bcrypt.hashSync(generateRandomPassword(), 8),
         });
 
         return res.json({
@@ -94,3 +94,34 @@ exports.verifyToken = (req, res, next) => {
         next();
     });
 };
+
+function generateRandomPassword() {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+    let password = "";
+
+    for (let index = 0; index < 12; index++) {
+        let randomNumber = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomNumber, randomNumber + 1)
+    }
+
+    return password;
+}
+
+exports.updatePassword = (req, res) => {
+    if (req.body.password == req.body.repeatPassword) {
+        User.update({
+            password: req.body.password
+        }, {
+            where: {
+                id: req.loggedUserId
+            }
+        }).then((result) => {
+            res.status(200).json({message: "Palavra-passe atualizada com sucesso!"});
+        }).catch((error) => {
+            res.status(400).send(error);
+        })
+    } else {
+        res.status(401).json({message: "Palavras-passe não coincidem!"})
+    }
+}

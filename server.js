@@ -45,9 +45,7 @@ app.route('/login').post([
 
 app.route('/register').post([
     body('name').notEmpty().escape(),
-    body('email').notEmpty().isEmail(),
-    body('password').notEmpty().escape(),
-    body('phone_number').notEmpty().isNumeric()
+    body('email').notEmpty().isEmail()
 ], function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
