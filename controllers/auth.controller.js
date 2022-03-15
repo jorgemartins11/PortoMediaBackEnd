@@ -60,14 +60,16 @@ exports.register = async (req, res) => {
             return res.status(400).json({
                 message: "Failed! Email is already in use!"
             });
+        let password = generateRandomPassword()
         user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: bcrypt.hashSync(generateRandomPassword(), 8),
+            password: bcrypt.hashSync(password, 8),
+            user_type: 'Cliente'
         });
 
         return res.json({
-            message: "User was registered successfully!"
+            message: "User was registered successfully!" + password
         });
     } catch (err) {
         res.status(500).json({
@@ -91,7 +93,7 @@ exports.verifyToken = (req, res, next) => {
             });
         }
         req.loggedUserId = decoded.id;
-        next();
+        return req.loggedUserId;
     });
 };
 
@@ -111,7 +113,7 @@ function generateRandomPassword() {
 exports.updatePassword = (req, res) => {
     if (req.body.password == req.body.repeatPassword) {
         User.update({
-            password: req.body.password
+            password: bcrypt.hashSync(req.body.password, 8),
         }, {
             where: {
                 id: req.loggedUserId
@@ -125,3 +127,15 @@ exports.updatePassword = (req, res) => {
         res.status(401).json({message: "Palavras-passe não coincidem!"})
     }
 }
+
+exports.isAdmin = async (req, res, next) => {
+    let user = await Users.findByPk(req.loggedUserId);
+    console.log(user.user_type_id)
+    if (user.user_type_id === 'Admin') {
+        next();
+        return;
+    }
+    return res.status(403).send({
+        message: "Require Admin Role!"
+    })
+};

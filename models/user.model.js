@@ -12,7 +12,8 @@ User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    phone_number: DataTypes.INTEGER
+    phone_number: DataTypes.INTEGER,
+    user_type: DataTypes.STRING
 }, { sequelize, modelName: 'user'})
 
 sequelize.sync().then().catch(error => {
