@@ -46,7 +46,7 @@ exports.sendEmail = async (req, res) => {
         text: 'Hello World!',
         subject: 'Hello World!',
         from: 'Jorge Martins <' + SMTP_CONFIG.user + '>',
-        to: SMTP_CONFIG.user
+        to: 'jorge.daniel11@outlook.com'
     })
 
     console.log(mailSent);

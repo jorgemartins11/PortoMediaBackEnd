@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "API-secret-key"
+    secret: process.env.API_secret_key
 };
