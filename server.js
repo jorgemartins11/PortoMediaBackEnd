@@ -15,9 +15,9 @@ const homeRouter = require('./routes/home.routes');
 
 const outdoorModel = require('./models/outdoor.model');
 const requestModel = require('./models/request.model');
-const outdoor_requestModel = require('./models/outdoor_request.model');
 const userModel = require('./models/user.model');
 const user_resquestModel = require('./models/user_request.model');
+const favoritesModel = require('./models/favorites.model');
 
 app.get('/', function (req, res) {
     res.status(200).json({

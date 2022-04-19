@@ -7,9 +7,6 @@ const Request = requestModel.Request;
 const outdoorModel = require('../models/outdoor.model');
 const Outdoor = outdoorModel.Outdoor;
 
-const outdoor_requestModel = require('../models/outdoor_request.model');
-const Outdoor_Request = outdoor_requestModel.Outdoor_Request;
-
 exports.makeRequest = (req, res) => {
     Request.create({
         name: req.body.name,
