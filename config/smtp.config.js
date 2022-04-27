@@ -1,6 +1,6 @@
 module.exports = {
-    host: "smtp.office365.com",
-    port: 587,
+    host: "webdomain02.dnscpanel.com",
+    port: 465,
     user: process.env.email,
     pass: process.env.pass
 }

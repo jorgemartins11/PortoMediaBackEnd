@@ -13,7 +13,7 @@ User.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     phone_number: DataTypes.INTEGER,
-    compnay: DataTypes.STRING,
+    company: DataTypes.STRING,
     user_type: DataTypes.STRING
 }, { sequelize, modelName: 'user'})
 

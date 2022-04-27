@@ -29,7 +29,7 @@ exports.sendEmail = async (req, res) => {
     const transporter = nodemailer.createTransport({
         host: SMTP_CONFIG.host,
         port: SMTP_CONFIG.port,
-        secure: false,
+        secure: true,
         auth: {
             user: SMTP_CONFIG.user,
             pass: SMTP_CONFIG.pass
@@ -42,11 +42,12 @@ exports.sendEmail = async (req, res) => {
     const mailSent = await transporter.sendMail({
         text: 'Hello World!',
         subject: 'Hello World!',
-        from: 'Jorge Martins <' + SMTP_CONFIG.user + '>',
+        from: SMTP_CONFIG.user,
         to: 'jorge.daniel11@outlook.com'
     })
 
     console.log(mailSent);
+    
 
     res.status(200).json({message: "Email enviado!"})
 }

@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("../config/auth.config.js");
 
+const nodemailer = require("nodemailer");
+const SMTP_CONFIG = require('../config/smtp.config');
+
 const userModel = require('../models/user.model');
 const User = userModel.User;
 
@@ -68,6 +71,36 @@ exports.register = async (req, res) => {
             user_type: 'Cliente'
         });
 
+        const transporter = nodemailer.createTransport({
+            host: SMTP_CONFIG.host,
+            port: SMTP_CONFIG.port,
+            secure: true,
+            auth: {
+                user: SMTP_CONFIG.user,
+                pass: SMTP_CONFIG.pass
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const mailSent = await transporter.sendMail({
+            subject: 'Password',
+            from: SMTP_CONFIG.user,
+            to: 'jorge.daniel11@outlook.com',
+            html: `
+                <p>${password}</p>
+                <img src="cid:banner">
+            `,
+            attachments: [{
+                filename: 'portomedia_email_banner.jpg',
+                path: '../PortoMediaBackEnd/assets/portomedia_email_banner.jpg',
+                cid: 'banner' //same cid value as in the html img src
+            }]
+        })
+
+        console.log(mailSent);
+
         return res.json({
             message: "User was registered successfully!" + password
         });
@@ -119,12 +152,16 @@ exports.updatePassword = (req, res) => {
                 id: req.loggedUserId
             }
         }).then((result) => {
-            res.status(200).json({message: "Palavra-passe atualizada com sucesso!"});
+            res.status(200).json({
+                message: "Palavra-passe atualizada com sucesso!"
+            });
         }).catch((error) => {
             res.status(400).send(error);
         })
     } else {
-        res.status(401).json({message: "Palavras-passe não coincidem!"})
+        res.status(401).json({
+            message: "Palavras-passe não coincidem!"
+        })
     }
 }
 
