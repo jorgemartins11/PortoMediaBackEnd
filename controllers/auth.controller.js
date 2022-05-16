@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const config = require("../config/auth.config.js");
 
 const nodemailer = require("nodemailer");
+const hbs = require('nodemailer-express-handlebars');
+
 const SMTP_CONFIG = require('../config/smtp.config');
 
 const userModel = require('../models/user.model');
@@ -83,26 +85,36 @@ exports.register = async (req, res) => {
                 rejectUnauthorized: false
             }
         });
-
+    
+        transporter.use('compile', hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                layoutsDir: 'views/',
+                defaultLayout: 'email'
+            },
+            viewPath: "views",
+            extName: ".handlebars"
+        }))
+    
         const mailSent = await transporter.sendMail({
-            subject: 'Password',
-            from: SMTP_CONFIG.user,
-            to: 'jorge.daniel11@outlook.com',
-            html: `
-                <p>${password}</p>
-                <img src="cid:banner">
-            `,
+            subject: 'Palavra-Passe PortoMedia',
+            from: SMTP_CONFIG.user, 
+            to: req.body.email,
             attachments: [{
                 filename: 'portomedia_email_banner.jpg',
-                path: '../PortoMediaBackEnd/assets/portomedia_email_banner.jpg',
-                cid: 'banner' //same cid value as in the html img src
-            }]
+                path: './assets/portomedia_email_banner.jpg',
+                cid: 'banner'
+            }],
+            template: "email",
+            context: {
+                password: password
+            }
         })
-
+    
         console.log(mailSent);
 
         return res.json({
-            message: "User was registered successfully!" + password
+            message: "User was registered successfully! " + password
         });
     } catch (err) {
         res.status(500).json({
@@ -110,38 +122,6 @@ exports.register = async (req, res) => {
         });
     };
 };
-
-exports.verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
-    if (!token) {
-        return res.status(403).send({
-            message: "No token provided!"
-        });
-    }
-
-    jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return res.status(401).send({
-                message: "Unauthorized!"
-            });
-        }
-        req.loggedUserId = decoded.id;
-        return req.loggedUserId;
-    });
-};
-
-function generateRandomPassword() {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-    let password = "";
-
-    for (let index = 0; index < 12; index++) {
-        let randomNumber = Math.floor(Math.random() * chars.length);
-        password += chars.substring(randomNumber, randomNumber + 1)
-    }
-
-    return password;
-}
 
 exports.updatePassword = (req, res) => {
     if (req.body.password == req.body.repeatPassword) {
@@ -163,7 +143,93 @@ exports.updatePassword = (req, res) => {
             message: "Palavras-passe não coincidem!"
         })
     }
+};
+
+exports.recoverPassword = async (req, res) => {
+    if (req.body.email == req.body.repeatEmail) {
+        let user = await User.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        if (user) {
+            res.status(400).json({
+                message: "O email que inseriu não está registado!"
+            });
+        } else {
+            let password = generateRandomPassword();
+
+            //? Email
+            const transporter = nodemailer.createTransport({
+                host: SMTP_CONFIG.host,
+                port: SMTP_CONFIG.port,
+                secure: true,
+                auth: {
+                    user: SMTP_CONFIG.user,
+                    pass: SMTP_CONFIG.pass
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+        
+            transporter.use('compile', hbs({
+                viewEngine: {
+                    extname: '.handlebars',
+                    layoutsDir: 'views/',
+                    defaultLayout: 'email'
+                },
+                viewPath: "views",
+                extName: ".handlebars"
+            }))
+        
+            const mailSent = await transporter.sendMail({
+                subject: 'Recuperar Palavra-Passe PortoMedia',
+                from: SMTP_CONFIG.user, 
+                to: req.body.email,
+                attachments: [{
+                    filename: 'portomedia_email_banner.jpg',
+                    path: './assets/portomedia_email_banner.jpg',
+                    cid: 'banner'
+                }],
+                template: "recoverpassword_email",
+                context: {
+                    password: password
+                }
+            })
+        
+            console.log(mailSent);
+            //? Email
+
+            res.status(200).json({
+                message: "Foi-lhe enviado um email com uma nova palavra-passe!"
+            })
+        }
+    } else {
+        res.status(400).json({
+            message: "Os emails que inseriu não coincidem!"
+        })
+    }
 }
+
+exports.verifyToken = (req, res, next) => {
+    let token = req.headers["x-access-token"];
+    if (!token) {
+        return res.status(403).send({
+            message: "No token provided!"
+        });
+    }
+
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({
+                message: "Unauthorized!"
+            });
+        }
+        req.loggedUserId = decoded.id;
+        return req.loggedUserId;
+    });
+};
 
 exports.isAdmin = async (req, res, next) => {
     let user = await Users.findByPk(req.loggedUserId);
@@ -176,3 +242,16 @@ exports.isAdmin = async (req, res, next) => {
         message: "Require Admin Role!"
     })
 };
+
+function generateRandomPassword() {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+    let password = "";
+
+    for (let index = 0; index < 12; index++) {
+        let randomNumber = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomNumber, randomNumber + 1)
+    }
+
+    return password;
+}

@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer");
+const hbs = require('nodemailer-express-handlebars');
+
 const SMTP_CONFIG = require('../config/smtp.config');
 
 const requestModel = require('../models/request.model');
@@ -39,15 +41,37 @@ exports.sendEmail = async (req, res) => {
         }
     });
 
+    //! Verificar viewPath (não está a ler corretamente o diretorio)
+    transporter.use('compile', hbs({
+        viewEngine: {
+            extname: '.handlebars',
+            layoutsDir: 'views/',
+            defaultLayout: 'email'
+        },
+        viewPath: "views",
+        extName: ".handlebars"
+    }))
+
     const mailSent = await transporter.sendMail({
-        text: 'Hello World!',
-        subject: 'Hello World!',
-        from: SMTP_CONFIG.user,
-        to: 'jorge.daniel11@outlook.com'
+        subject: 'Palavra-Passe PortoMedia',
+        from: SMTP_CONFIG.user, 
+        to: 'jorge.daniel11@outlook.com',
+        attachments: [{
+            filename: 'portomedia_email_banner.jpg',
+            path: './assets/portomedia_email_banner.jpg',
+            cid: 'banner'
+        }],
+        template: "email",
+        context: {
+            password: "12345",
+            bannerSrc: "../assets/portomedia_email_banner.jpg"
+        }
     })
 
     console.log(mailSent);
-    
 
-    res.status(200).json({message: "Email enviado!"})
+
+    res.status(200).json({
+        message: "Email enviado!"
+    })
 }
