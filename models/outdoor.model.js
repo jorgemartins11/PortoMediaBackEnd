@@ -9,9 +9,10 @@ const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.P
 class Outdoor extends Model {}
 
 Outdoor.init({
-    photo: DataTypes.BLOB,
+    photoSrc: DataTypes.STRING,
     adress: DataTypes.STRING,
-    available: DataTypes.BOOLEAN
+    available: DataTypes.INTEGER,
+    visible: DataTypes.INTEGER
 }, { sequelize, modelName: 'outdoor'})
 
 sequelize.sync().then().catch(error => {

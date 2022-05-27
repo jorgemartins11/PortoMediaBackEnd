@@ -1,8 +1,12 @@
 const dbConfig = require('../config/db.config');
 
-const { Sequelize, Model, DataTypes } = require('sequelize'); 
+const {
+    Sequelize,
+    Model,
+    DataTypes
+} = require('sequelize');
 const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST, 
+    host: dbConfig.HOST,
     dialect: dbConfig.dialect
 })
 
@@ -15,10 +19,13 @@ User.init({
     phone_number: DataTypes.INTEGER,
     company: DataTypes.STRING,
     user_type: DataTypes.STRING
-}, { sequelize, modelName: 'user'})
+}, {
+    sequelize,
+    modelName: 'user'
+})
 
 sequelize.sync().then().catch(error => {
-    console.log("ERROR: " + error + " SYNC REQUEST MODELS"); 
+    console.log("ERROR: " + error + " SYNC REQUEST MODELS");
 })
 
 exports.User = User;

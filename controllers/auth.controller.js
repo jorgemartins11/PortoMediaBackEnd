@@ -1,15 +1,20 @@
+//* Encrypting variables
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config = require("../config/auth.config.js");
 
+//* Nodemailer variables
 const nodemailer = require("nodemailer");
 const hbs = require('nodemailer-express-handlebars');
 
+//* SMTP Configuration
 const SMTP_CONFIG = require('../config/smtp.config');
 
+//* Database's User table
 const userModel = require('../models/user.model');
 const User = userModel.User;
 
+//* Log In Function
 exports.logIn = async (req, res) => {
     try {
         let user = await User.findOne({
@@ -50,9 +55,9 @@ exports.logIn = async (req, res) => {
             message: err.message
         });
     };
+};
 
-}
-
+//* Register Funcion
 exports.register = async (req, res) => {
     console.log("hello")
     try {
@@ -123,6 +128,7 @@ exports.register = async (req, res) => {
     };
 };
 
+//* Update Password Function
 exports.updatePassword = (req, res) => {
     if (req.body.password == req.body.repeatPassword) {
         User.update({
@@ -145,6 +151,7 @@ exports.updatePassword = (req, res) => {
     }
 };
 
+//* Recover Password Function
 exports.recoverPassword = async (req, res) => {
     if (req.body.email == req.body.repeatEmail) {
         let user = await User.findOne({
@@ -177,7 +184,7 @@ exports.recoverPassword = async (req, res) => {
                 viewEngine: {
                     extname: '.handlebars',
                     layoutsDir: 'views/',
-                    defaultLayout: 'email'
+                    defaultLayout: 'recoverpassword_email'
                 },
                 viewPath: "views",
                 extName: ".handlebars"
@@ -209,9 +216,10 @@ exports.recoverPassword = async (req, res) => {
         res.status(400).json({
             message: "Os emails que inseriu não coincidem!"
         })
-    }
-}
+    };
+};
 
+//* Function to verify the logged User
 exports.verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
     if (!token) {
@@ -231,6 +239,7 @@ exports.verifyToken = (req, res, next) => {
     });
 };
 
+//* Function to get User's type
 exports.isAdmin = async (req, res, next) => {
     let user = await Users.findByPk(req.loggedUserId);
     console.log(user.user_type_id)
@@ -243,8 +252,9 @@ exports.isAdmin = async (req, res, next) => {
     })
 };
 
+//* Function to generate a random password
 function generateRandomPassword() {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.:,;-_+*?!#$%&/()=";
 
     let password = "";
 

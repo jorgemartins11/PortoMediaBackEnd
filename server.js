@@ -10,7 +10,6 @@ app.use(cors());
 const companyRouter = require('./routes/company.routes');
 const contactsRouter = require('./routes/contacts.routes');
 const outdoorsRouter = require('./routes/outdoors.routes');
-const requestRouter = require('./routes/request.routes');
 const homeRouter = require('./routes/home.routes');
 
 const outdoorModel = require('./models/outdoor.model');
@@ -28,8 +27,7 @@ app.get('/', function (req, res) {
 app.use('/', homeRouter);
 // app.use('/quemsomos', companyRouter);
 // app.use('/contactos', contactsRouter);
-// app.use('/outdoors', outdoorsRouter);
-app.use('/fazer-pedido', requestRouter);
+app.use('/outdoors', outdoorsRouter);
 
 app.listen(port, () => {
     console.log('Server Running at http://localhost:' + port);
