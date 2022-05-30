@@ -7,7 +7,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-const companyRouter = require('./routes/company.routes');
+const profileRouter = require('./routes/profile.routes');
 const contactsRouter = require('./routes/contacts.routes');
 const outdoorsRouter = require('./routes/outdoors.routes');
 const homeRouter = require('./routes/home.routes');
@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 });
 
 app.use('/', homeRouter);
-// app.use('/quemsomos', companyRouter);
+app.use('/profile', profileRouter);
 // app.use('/contactos', contactsRouter);
 app.use('/outdoors', outdoorsRouter);
 

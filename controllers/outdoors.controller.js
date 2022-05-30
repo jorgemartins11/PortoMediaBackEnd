@@ -5,18 +5,10 @@ const favoritesModel = require('../models/favorites.model');
 const Favorite = favoritesModel.Favorite;
 
 /**
- *! Available e Visible  
+ *! Available & Visible  
  *? 1 - True
  *? 0 - False
  */
-
-exports.getOutdoors = (req, res) => {
-    Outdoor.findAll().then((result) => {
-        res.status(200).json(result);
-    }).catch((errors) => {
-        res.status(400).send(errors);
-    })
-};
 
 exports.getVisibleOutdoors = (req, res) => {
     Outdoor.findAll({
@@ -25,22 +17,6 @@ exports.getVisibleOutdoors = (req, res) => {
         }
     }).then((result) => {
         res.status(200).json(result);
-    }).catch((error) => {
-        res.status(400).send(error);
-    })
-};
-
-exports.makeOutdoorVisible = (req, res, visibility) => {
-    Outdoor.update({
-        visible: parseInt(visibility)
-    }, {
-        where: {
-            id: req.body.id
-        }
-    }).then((result) => {
-        res.status(200).json({
-            message: "Outdoor atualizado com sucesso!"
-        });
     }).catch((error) => {
         res.status(400).send(error);
     })

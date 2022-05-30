@@ -7,7 +7,7 @@ const {
 
 const contactsController = require('../controllers/contacts.controller');
 
-router.route('/').get(function (req, res) {
+router.route('/').post(function (req, res) {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
         contactsController.makeContact(req, res);
