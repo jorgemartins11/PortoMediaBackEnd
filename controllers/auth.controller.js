@@ -99,7 +99,7 @@ exports.register = async (req, res) => {
             },
             viewPath: "views",
             extName: ".handlebars"
-        }))
+        }));
     
         const mailSent = transporter.sendMail({
             subject: 'Palavra-Passe PortoMedia',
@@ -114,7 +114,7 @@ exports.register = async (req, res) => {
             context: {
                 password: password
             }
-        })
+        });
     
         console.log(mailSent);
 

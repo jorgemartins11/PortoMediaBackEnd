@@ -54,4 +54,11 @@ router.route('/email').get(function (req, res) {
     }
 })
 
+router.route('/try').get(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        contactsController.try(req, res);
+    }
+})
+
 module.exports = router;
