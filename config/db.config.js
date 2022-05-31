@@ -3,10 +3,10 @@
  * It contains the host server and the credentials to get into the database
  */
  const config = {
-    HOST: process.env.DB_HOST,
-    USER: process.env.DB_USER,
+    HOST: "www.smartcitysensor.pt",
+    USER: "smartcit_portomedia",
     PASSWORD: process.env.DB_PASS,
-    DB: process.env.DB_NAME,
+    DB: "smartcit_PortoMedia",
     dialect: "mysql"
     // pool: {
     //     max: 5,

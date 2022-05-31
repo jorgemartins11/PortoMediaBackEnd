@@ -52,4 +52,4 @@ exports.changeOutdoorVisibility = (req, res, visibility) => {
 
 exports.AddAcceptedRequest = (req, res) => {
     
-}
+};
