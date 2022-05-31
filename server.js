@@ -5,7 +5,6 @@ const port = process.env.PORT || 3000;
 const cors = require('cors');
 
 app.use(express.json());
-app.use(cors());
 
 const profileRouter = require('./routes/profile.routes');
 const contactsRouter = require('./routes/contacts.routes');
