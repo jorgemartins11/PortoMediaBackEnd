@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 
 const profileRouter = require('./routes/profile.routes');
@@ -25,7 +26,7 @@ app.get('/', function (req, res) {
 
 app.use('/', homeRouter);
 app.use('/profile', profileRouter);
-// app.use('/contactos', contactsRouter);
+app.use('/contactos', contactsRouter);
 app.use('/outdoors', outdoorsRouter);
 
 app.listen(port, () => {

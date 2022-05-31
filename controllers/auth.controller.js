@@ -58,10 +58,10 @@ exports.logIn = async (req, res) => {
 };
 
 //* Register Funcion
-exports.register = async (req, res) => {
+exports.register = (req, res) => {
     console.log("hello")
     try {
-        let user = await User.findOne({
+        let user = User.findOne({
             where: {
                 email: req.body.email
             }
@@ -71,7 +71,7 @@ exports.register = async (req, res) => {
                 message: "Failed! Email is already in use!"
             });
         let password = generateRandomPassword()
-        user = await User.create({
+        user = User.create({
             name: req.body.name,
             email: req.body.email,
             password: bcrypt.hashSync(password, 8),
@@ -101,7 +101,7 @@ exports.register = async (req, res) => {
             extName: ".handlebars"
         }))
     
-        const mailSent = await transporter.sendMail({
+        const mailSent = transporter.sendMail({
             subject: 'Palavra-Passe PortoMedia',
             from: SMTP_CONFIG.user, 
             to: req.body.email,
