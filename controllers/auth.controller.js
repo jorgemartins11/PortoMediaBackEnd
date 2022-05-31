@@ -58,10 +58,10 @@ exports.logIn = async (req, res) => {
 };
 
 //* Register Funcion
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
     console.log("hello")
     try {
-        let user = User.findOne({
+        let user = await User.findOne({
             where: {
                 email: req.body.email
             }
@@ -71,7 +71,7 @@ exports.register = (req, res) => {
                 message: "Failed! Email is already in use!"
             });
         let password = generateRandomPassword()
-        user = User.create({
+        user = await User.create({
             name: req.body.name,
             email: req.body.email,
             password: bcrypt.hashSync(password, 8),
