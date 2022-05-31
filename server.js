@@ -17,6 +17,7 @@ const requestModel = require('./models/request.model');
 const userModel = require('./models/user.model');
 const user_resquestModel = require('./models/user_request.model');
 const favoritesModel = require('./models/favorites.model');
+const emailModel = require('./models/current_email.model');
 
 app.get('/', function (req, res) {
     res.status(200).json({
