@@ -21,7 +21,7 @@ router.route('/').get(function (req, res) {
 router.route('/:outdoorId').post([
     body("name"),
     body("email", 'O email que inseriu não é válido!').isEmail(),
-    body("contact").isNumeric().optional().isLength({min: 8, max:9}).withMessage("O contacto que inseriu não é válido!"),
+    body("contact").isNumeric().optional().isLength({min: 8, max:8}).withMessage("O contacto que inseriu não é válido!"),
     body("company"),
     body("message").optional()
 ], function (req, res) {
