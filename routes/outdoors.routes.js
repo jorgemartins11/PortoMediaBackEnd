@@ -21,7 +21,7 @@ router.route('/').get(function (req, res) {
 router.route('/:outdoorId').post([
     body("name").escape(),
     body("email").isEmail(),
-    body("contact").isNumeric(),
+    body("contact").isNumeric().optional().isLength({min: 9, max:9}),
     body("company").escape(),
     body("message").escape().optional()
 ], function (req, res) {
