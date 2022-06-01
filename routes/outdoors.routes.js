@@ -18,7 +18,13 @@ router.route('/').get(function (req, res) {
     };
 });
 
-router.route('/:outdoorId').post(function (req, res) {
+router.route('/:outdoorId').post([
+    body("name").escape(),
+    body("email").isEmail(),
+    body("contact").isNumeric(),
+    body("company").escape(),
+    body("message").escape().optional()
+], function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
