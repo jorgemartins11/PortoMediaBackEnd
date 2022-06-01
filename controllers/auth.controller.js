@@ -61,7 +61,7 @@ exports.logIn = async (req, res) => {
 exports.register = async (req, res) => {
     console.log("hello")
     try {
-        let user = User.findOne({
+        let user = await User.findOne({
             where: {
                 email: req.body.email
             }
