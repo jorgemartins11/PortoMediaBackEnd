@@ -19,11 +19,11 @@ router.route('/').get(function (req, res) {
 });
 
 router.route('/:outdoorId').post([
-    body("name").escape(),
-    body("email").isEmail(),
-    body("contact").isNumeric().optional().isLength({min: 9, max:9}),
-    body("company").escape(),
-    body("message").escape().optional()
+    body("name"),
+    body("email", 'O email que inseriu não é válido!').isEmail(),
+    body("contact").isNumeric().optional().isLength({min: 9, max:9}).withMessage("O contacto que inseriu não é válido!"),
+    body("company"),
+    body("message").optional()
 ], function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
