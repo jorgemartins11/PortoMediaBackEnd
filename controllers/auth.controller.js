@@ -78,7 +78,7 @@ exports.register = async (req, res) => {
             user_type: 'Cliente'
         });
 
-        const transporter = nodemailer.createTransport({
+        const transporter = await nodemailer.createTransport({
             host: SMTP_CONFIG.host,
             port: SMTP_CONFIG.port,
             secure: true,
