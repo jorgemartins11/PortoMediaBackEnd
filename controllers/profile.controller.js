@@ -18,7 +18,6 @@ exports.editProfile = (req, res) => {
     User.update({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
         phone_number: req.body.phone_number,
         company: req.body.company
     }, {
@@ -37,6 +36,8 @@ exports.editProfile = (req, res) => {
 exports.getUserFavoritesAndOutdoors = (req, res) => {
     let favorites = getUserFavorites(req, res);
     let rentOutdoors = getUserRentOutdoors(req, res);
+
+    //! ---------------------------------------
 
     res.status(200).send(favorites);
 };
