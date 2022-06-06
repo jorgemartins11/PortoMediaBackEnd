@@ -59,7 +59,6 @@ exports.logIn = async (req, res) => {
 
 //* Register Funcion
 exports.register = async (req, res) => {
-    console.log("hello")
     try {
         let user = await User.findOne({
             where: {
@@ -70,9 +69,14 @@ exports.register = async (req, res) => {
             return res.status(400).json({
                 message: "Failed! Email is already in use!"
             });
+        if (req.body.email != req.body.repeatEmail) {
+            return res.status(400).json({
+                message: "Failed! Email's don't match!"
+            });
+        }
         let password = generateRandomPassword()
         user = await User.create({
-            name: req.body.name,
+            // name: req.body.name,
             email: req.body.email,
             password: bcrypt.hashSync(password, 8),
             user_type: 'Cliente'

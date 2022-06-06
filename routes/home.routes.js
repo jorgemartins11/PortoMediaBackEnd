@@ -21,8 +21,8 @@ router.route('/login').post([
 })
 
 router.route('/register').post([
-    body('name').notEmpty().escape(),
-    body('email').notEmpty().isEmail()
+    body('email').notEmpty().isEmail(),
+    body('repeatEmail').notEmpty().isEmail()
 ], function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
