@@ -37,10 +37,7 @@ router.route('/recoverPassword').put([
 ], function (req, res) {
     const errors = validationResult(req);
     if (error.isEmpty()) {
-        authController.verifyToken(req, res);
-        if (req.loggedUserId != null) {
-            authController.recoverPassword(req, res);
-        };
+        authController.recoverPassword(req, res);
     } else {
         res.status(400).send(errors);
     }
