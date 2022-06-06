@@ -12,7 +12,7 @@ const authController = require("../controllers/auth.controller");
 router.route('/').get(function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-        outdoorController.getOutdoors(req, res);
+        outdoorController.getVisibleOutdoors(req, res);
     } else {
         res.status(400).send(errors);
     };

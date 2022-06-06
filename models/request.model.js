@@ -37,6 +37,8 @@ Request.init({
     company: DataTypes.STRING,
     outdoorId: DataTypes.INTEGER,
     monthly_price: DataTypes.DOUBLE,
+    begin_date: DataTypes.DATE,
+    end_date: DataTypes.DATE,
     status: DataTypes.STRING
 }, {
     sequelize,
