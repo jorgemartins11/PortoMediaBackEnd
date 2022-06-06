@@ -162,7 +162,7 @@ exports.recoverPassword = async (req, res) => {
             email: req.body.email
         }
     });
-    if (user) {
+    if (!user) {
         res.status(400).json({
             message: "O email que inseriu não está registado!"
         });
