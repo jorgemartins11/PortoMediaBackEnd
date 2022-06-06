@@ -36,7 +36,7 @@ router.route('/recoverPassword').put([
     body('email', 'O email que inseriu não é válido!').notEmpty().isEmail()
 ], function (req, res) {
     const errors = validationResult(req);
-    if (error.isEmpty()) {
+    if (errors.isEmpty()) {
         authController.recoverPassword(req, res);
     } else {
         res.status(400).send(errors);
