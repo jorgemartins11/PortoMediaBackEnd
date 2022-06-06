@@ -157,77 +157,71 @@ exports.updatePassword = (req, res) => {
 
 //* Recover Password Function
 exports.recoverPassword = async (req, res) => {
-    if (req.body.email == req.body.repeatEmail) {
-        let user = await User.findOne({
-            where: {
-                email: req.body.email
-            }
-        })
-        if (user) {
-            res.status(400).json({
-                message: "O email que inseriu não está registado!"
-            });
-        } else {
-            let password = generateRandomPassword();
-
-            await User.update({
-                password: password
-            }, {
-                where: {
-                    id: req.loggedUserId
-                }
-            })
-
-            //? Email
-            const transporter = nodemailer.createTransport({
-                host: SMTP_CONFIG.host,
-                port: SMTP_CONFIG.port,
-                secure: true,
-                auth: {
-                    user: SMTP_CONFIG.user,
-                    pass: SMTP_CONFIG.pass
-                },
-                tls: {
-                    rejectUnauthorized: false
-                }
-            });
-
-            transporter.use('compile', hbs({
-                viewEngine: {
-                    extname: '.handlebars',
-                    layoutsDir: 'views/',
-                    defaultLayout: 'recoverpassword_email'
-                },
-                viewPath: "views",
-                extName: ".handlebars"
-            }))
-
-            const mailSent = await transporter.sendMail({
-                subject: 'Recuperar Palavra-Passe PortoMedia',
-                from: SMTP_CONFIG.user,
-                to: req.body.email,
-                attachments: [{
-                    filename: 'portomedia_email_banner.jpg',
-                    path: './assets/portomedia_email_banner.jpg',
-                    cid: 'banner'
-                }],
-                template: "recoverpassword_email",
-                context: {
-                    password: password
-                }
-            })
-
-            console.log(mailSent);
-            //? Email
-
-            res.status(200).json({
-                message: "Foi-lhe enviado um email com uma nova palavra-passe!"
-            })
+    let user = await User.findOne({
+        where: {
+            email: req.body.email
         }
-    } else {
+    });
+    if (user) {
         res.status(400).json({
-            message: "Os emails que inseriu não coincidem!"
-        })
+            message: "O email que inseriu não está registado!"
+        });
+    } else {
+        let password = generateRandomPassword();
+
+        await User.update({
+            password: password
+        }, {
+            where: {
+                id: req.loggedUserId
+            }
+        });
+
+        //? Email
+        const transporter = nodemailer.createTransport({
+            host: SMTP_CONFIG.host,
+            port: SMTP_CONFIG.port,
+            secure: true,
+            auth: {
+                user: SMTP_CONFIG.user,
+                pass: SMTP_CONFIG.pass
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        transporter.use('compile', hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                layoutsDir: 'views/',
+                defaultLayout: 'recoverpassword_email'
+            },
+            viewPath: "views",
+            extName: ".handlebars"
+        }));
+
+        const mailSent = await transporter.sendMail({
+            subject: 'Recuperar Palavra-Passe PortoMedia',
+            from: SMTP_CONFIG.user,
+            to: req.body.email,
+            attachments: [{
+                filename: 'portomedia_email_banner.jpg',
+                path: './assets/portomedia_email_banner.jpg',
+                cid: 'banner'
+            }],
+            template: "recoverpassword_email",
+            context: {
+                password: password
+            }
+        });
+
+        console.log(mailSent);
+        //? Email
+
+        res.status(200).json({
+            message: "Foi-lhe enviado um email com uma nova palavra-passe!"
+        });
     };
 };
 
