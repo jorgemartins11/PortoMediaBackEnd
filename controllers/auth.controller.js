@@ -94,7 +94,7 @@ exports.register = async (req, res) => {
                 rejectUnauthorized: false
             }
         });
-    
+
         transporter.use('compile', hbs({
             viewEngine: {
                 extname: '.handlebars',
@@ -104,10 +104,10 @@ exports.register = async (req, res) => {
             viewPath: "views",
             extName: ".handlebars"
         }));
-    
+
         const mailSent = transporter.sendMail({
             subject: 'Palavra-Passe PortoMedia',
-            from: SMTP_CONFIG.user, 
+            from: SMTP_CONFIG.user,
             to: req.body.email,
             attachments: [{
                 filename: 'portomedia_email_banner.jpg',
@@ -119,7 +119,7 @@ exports.register = async (req, res) => {
                 password: password
             }
         });
-    
+
         console.log(mailSent);
 
         return res.json({
@@ -170,6 +170,14 @@ exports.recoverPassword = async (req, res) => {
         } else {
             let password = generateRandomPassword();
 
+            await User.update({
+                password: password
+            }, {
+                where: {
+                    id: req.loggedUserId
+                }
+            })
+
             //? Email
             const transporter = nodemailer.createTransport({
                 host: SMTP_CONFIG.host,
@@ -183,7 +191,7 @@ exports.recoverPassword = async (req, res) => {
                     rejectUnauthorized: false
                 }
             });
-        
+
             transporter.use('compile', hbs({
                 viewEngine: {
                     extname: '.handlebars',
@@ -193,10 +201,10 @@ exports.recoverPassword = async (req, res) => {
                 viewPath: "views",
                 extName: ".handlebars"
             }))
-        
+
             const mailSent = await transporter.sendMail({
                 subject: 'Recuperar Palavra-Passe PortoMedia',
-                from: SMTP_CONFIG.user, 
+                from: SMTP_CONFIG.user,
                 to: req.body.email,
                 attachments: [{
                     filename: 'portomedia_email_banner.jpg',
@@ -208,7 +216,7 @@ exports.recoverPassword = async (req, res) => {
                     password: password
                 }
             })
-        
+
             console.log(mailSent);
             //? Email
 

@@ -32,6 +32,20 @@ router.route('/register').post([
     }
 })
 
+router.route('/recoverPassword').put([
+    body('email', 'O email que inseriu não é válido!').notEmpty().isEmail()
+], function (req, res) {
+    const errors = validationResult(req);
+    if (error.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            authController.recoverPassword(req, res);
+        };
+    } else {
+        res.status(400).send(errors);
+    }
+})
+
 router.route('/trocar-password').put([
     body('password').notEmpty().escape(),
     body('repeatPassword').notEmpty().escape()
