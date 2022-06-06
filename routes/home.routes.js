@@ -32,7 +32,7 @@ router.route('/register').post([
     }
 })
 
-router.route('/recoverPassword').put([
+router.route('/recoverPassword').post([
     body('email', 'O email que inseriu não é válido!').notEmpty().isEmail()
 ], function (req, res) {
     const errors = validationResult(req);
