@@ -69,7 +69,9 @@ exports.makeRequest = async (req, res) => {
 
         console.log(mailSent);
 
-        res.status(200).json({message: "Orçamento pedido com sucesso!"})
+        res.status(200).json({
+            message: "Orçamento pedido com sucesso!"
+        })
     }).catch((error) => {
         res.status(400).send(error);
     });
@@ -77,7 +79,41 @@ exports.makeRequest = async (req, res) => {
 
 //* Function for the user to make contact
 exports.makeContact = (req, res) => {
-    //! inserir email para haver contacto entre o cliente e a portomedia
+    try {
+        transporter.use('compile', hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                layoutsDir: 'views/',
+                defaultLayout: 'message'
+            },
+            viewPath: "views",
+            extName: ".handlebars"
+        }));
+
+        //! Mudar variavéis
+        const mailSent = transporter.sendMail({
+            subject: 'Contacto Porto Media: ' + req.body.name,
+            from: SMTP_CONFIG.user,
+            to: "jorge.daniel11@outlook.com",
+            template: "message",
+            context: {
+                client_name: req.body.name,
+                client_contact: req.body.contact,
+                client_email: req.body.email,
+                client_message: req.body.message
+            }
+        });
+
+        console.log(mailSent);
+
+        res.status(200).json({
+            message: "Mensagem enviada com sucesso!"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    };
 };
 
 //* Test function to send an email

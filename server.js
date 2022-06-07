@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 app.use('/', homeRouter);
 app.use('/profile', profileRouter);
-app.use('/contactos', contactsRouter);
+app.use('/contacts', contactsRouter);
 app.use('/outdoors', outdoorsRouter);
 
 app.listen(port, () => {
