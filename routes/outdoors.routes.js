@@ -32,25 +32,21 @@ router.route('/:outdoorId').post([
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {
-            if (req.body.function == "budget") {
-                contactsController.makeRequest(req, res);
-            } else {
-                outdoorController.addFavorite(req, res);
-            };
+            contactsController.makeRequest(req, res);
         };
     } else {
         res.status(400).send(errors);
     };
-}).delete(function (req, res) {
-    const errors = validationResult(req)
+});
+
+router.route('/favorite').post(function (req, res) {
+    const errors = validationResult(req);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {
-            outdoorController.removeFavorite(req, res);
-        }
-    } else {
-        res.status(400).send(errors);
-    }
-})
+            contactsController.addAndRemoveFavorite();
+        };
+    };
+});
 
 module.exports = router;

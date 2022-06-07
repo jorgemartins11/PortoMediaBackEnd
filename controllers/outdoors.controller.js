@@ -35,28 +35,52 @@ exports.createOutdoor = (req, res) => {
     });
 };
 
-exports.addFavorite = (req, res) => {
-    Favorite.create({
-        userId: req.loggedUserId,
-        outdoorId: req.params.outdoorId
-    }).then((result) => {
-        res.status(200).json(result);
-    }).catch((error) => {
-        res.status(400).send(error);
-    });
-};
-
-exports.removeFavorite = (req, res) => {
-    Favorite.destroy({
+exports.addAndRemoveFavorite = async (req, res) => {
+    let favorite = await Favorite.findOne({
         where: {
             userId: req.loggedUserId,
             outdoorId: req.params.outdoorId
         }
-    }).then((result) => {
-        res.status(200).json({
-            message: "Outdoor removido dos favoritos!"
+    });
+
+    if (favorite) {
+        Favorite.destroy({
+            where: {
+                userId: req.loggedUserId,
+                outdoorId: req.params.outdoorId
+            }
+        }).then((result) => {
+            res.status(200).json({
+                message: "Outdoor removido dos favoritos!"
+            });
+        }).catch((error) => {
+            res.status(400).send(error);
+        })
+    } else {
+        Favorite.create({
+            userId: req.loggedUserId,
+            outdoorId: req.params.outdoorId
+        }).then((result) => {
+            res.status(200).json({
+                message: "Outdoor adicionado aos favoritos!"
+            });
+        }).catch((error) => {
+            res.status(400).send(error);
         });
-    }).catch((error) => {
-        res.status(400).send(error);
-    })
+    };
 };
+
+// exports.removeFavorite = (req, res) => {
+//     Favorite.destroy({
+//         where: {
+//             userId: req.loggedUserId,
+//             outdoorId: req.params.outdoorId
+//         }
+//     }).then((result) => {
+//         res.status(200).json({
+//             message: "Outdoor removido dos favoritos!"
+//         });
+//     }).catch((error) => {
+//         res.status(400).send(error);
+//     })
+// };
