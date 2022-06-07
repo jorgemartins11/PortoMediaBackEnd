@@ -36,6 +36,7 @@ const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.P
 class Outdoor extends Model {}
 
 Outdoor.init({
+    name: DataTypes.STRING,
     photoSrc: DataTypes.STRING,
     adress: DataTypes.STRING,
     available: DataTypes.INTEGER,
