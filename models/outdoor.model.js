@@ -37,7 +37,7 @@ class Outdoor extends Model {}
 
 Outdoor.init({
     name: DataTypes.STRING,
-    number: DataTypes.INTEGER,
+    photoSrc: DataTypes.STRING,
     adress: DataTypes.STRING,
     available: DataTypes.INTEGER,
     visible: DataTypes.INTEGER
