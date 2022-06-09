@@ -37,10 +37,12 @@ exports.makeRequest = async (req, res) => {
         company: req.body.company,
         outdoorId: req.params.outdoorId
     }).then((result) => {
-        UserRequest.create({
+        await UserRequest.create({
             userId: req.loggedUserId,
             requestId: result.id
         });
+
+        let outdoor = await Outdoor.findOne({where: {id: req.params.outdoorId}});
 
         transporter.use('compile', hbs({
             viewEngine: {
@@ -63,7 +65,7 @@ exports.makeRequest = async (req, res) => {
                 client_contact: req.body.contact,
                 client_email: req.body.email,
                 client_message: req.body.message,
-                outdoor_id: req.params.outdoorId
+                outdoor_id: outdoor.name
             }
         });
 
