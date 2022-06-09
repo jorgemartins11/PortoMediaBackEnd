@@ -37,12 +37,12 @@ exports.makeRequest = async (req, res) => {
         company: req.body.company,
         outdoorId: req.params.outdoorId
     }).then((result) => {
-        await UserRequest.create({
+        UserRequest.create({
             userId: req.loggedUserId,
             requestId: result.id
         });
 
-        let outdoor = await Outdoor.findOne({where: {id: req.params.outdoorId}});
+        let outdoor = Outdoor.findOne({where: {id: req.params.outdoorId}});
 
         transporter.use('compile', hbs({
             viewEngine: {
