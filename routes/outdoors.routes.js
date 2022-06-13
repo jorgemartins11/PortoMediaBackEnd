@@ -25,6 +25,8 @@ router.route('/favorite/:outdoorId').post(function (req, res) {
         if (req.loggedUserId != null) {
             outdoorController.addAndRemoveFavorite();
         };
+    } else {
+        res.status(400).send(errors);
     };
 });
 
