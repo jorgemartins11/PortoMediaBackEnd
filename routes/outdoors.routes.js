@@ -23,7 +23,7 @@ router.route('/favorite/:outdoorId').post(function (req, res) {
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {
-            contactsController.addAndRemoveFavorite();
+            outdoorController.addAndRemoveFavorite();
         };
     };
 });
