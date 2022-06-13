@@ -18,6 +18,16 @@ router.route('/').get(function (req, res) {
     };
 });
 
+router.route('/favorite/:outdoorId').post(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            contactsController.addAndRemoveFavorite();
+        };
+    };
+});
+
 router.route('/:outdoorId').post([
     body("name"),
     body("email", 'O email que inseriu não é válido!').isEmail(),
@@ -36,16 +46,6 @@ router.route('/:outdoorId').post([
         };
     } else {
         res.status(400).send(errors);
-    };
-});
-
-router.route('/favorite').post(function (req, res) {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        authController.verifyToken(req, res);
-        if (req.loggedUserId != null) {
-            contactsController.addAndRemoveFavorite();
-        };
     };
 });
 
