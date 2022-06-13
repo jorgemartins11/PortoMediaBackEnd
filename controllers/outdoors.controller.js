@@ -36,37 +36,41 @@ exports.createOutdoor = (req, res) => {
 };
 
 exports.addAndRemoveFavorite = async (req, res) => {
-    let favorite = await Favorite.findOne({
-        where: {
-            userId: req.loggedUserId,
-            outdoorId: req.params.outdoorId
-        }
-    });
-
-    if (favorite) {
-        Favorite.destroy({
+    try {
+        let favorite = await Favorite.findOne({
             where: {
                 userId: req.loggedUserId,
                 outdoorId: req.params.outdoorId
             }
-        }).then((result) => {
-            res.status(200).json({
-                message: "Outdoor removido dos favoritos!"
-            });
-        }).catch((error) => {
-            res.status(400).send(error);
-        })
-    } else {
-        Favorite.create({
-            userId: req.loggedUserId,
-            outdoorId: req.params.outdoorId
-        }).then((result) => {
-            res.status(200).json({
-                message: "Outdoor adicionado aos favoritos!"
-            });
-        }).catch((error) => {
-            res.status(400).send(error);
         });
+
+        if (favorite) {
+            Favorite.destroy({
+                where: {
+                    userId: req.loggedUserId,
+                    outdoorId: req.params.outdoorId
+                }
+            }).then((result) => {
+                res.status(200).json({
+                    message: "Outdoor removido dos favoritos!"
+                });
+            }).catch((error) => {
+                res.status(400).send(error);
+            })
+        } else {
+            Favorite.create({
+                userId: req.loggedUserId,
+                outdoorId: req.params.outdoorId
+            }).then((result) => {
+                res.status(200).json({
+                    message: "Outdoor adicionado aos favoritos!"
+                });
+            }).catch((error) => {
+                res.status(400).send(error);
+            });
+        };
+    } catch (error) {
+        res.status(400).send(error);
     };
 };
 
