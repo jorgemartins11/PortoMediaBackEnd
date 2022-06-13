@@ -34,6 +34,18 @@ router.route('/').get(function (req, res) {
     } else {
         res.status(400).send(errors);
     };
-})
+});
+
+router.route('/favorites').get(function(req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            profileController.getUserFavorites(req, res);
+        }
+    } else {
+        res.status(400).send(errors);
+    };
+});
 
 module.exports = router;
