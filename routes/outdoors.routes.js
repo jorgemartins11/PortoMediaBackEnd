@@ -23,7 +23,7 @@ router.route('/favorite/:outdoorId').post(function (req, res) {
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {
-            outdoorController.addAndRemoveFavorite();
+            outdoorController.addAndRemoveFavorite(req, res);
         };
     } else {
         res.status(400).send(errors);
