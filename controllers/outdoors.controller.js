@@ -4,6 +4,10 @@ const Outdoor = outdoorModel.Outdoor;
 const favoritesModel = require('../models/favorites.model');
 const Favorite = favoritesModel.Favorite;
 
+const {
+    Op
+} = require("sequelize");
+
 /**
  *! Available & Visible  
  *? 1 - True
@@ -47,8 +51,14 @@ exports.addAndRemoveFavorite = async (req, res) => {
         if (favorite) {
             Favorite.destroy({
                 where: {
-                    userId: req.loggedUserId,
-                    outdoorId: req.params.outdoorId
+                    [Op.and]: [{
+                            userId: req.loggedUserId
+                        },
+                        {
+                            outdoorId: req.params.outdoorId
+                        }
+                    ]
+
                 }
             }).then((result) => {
                 res.status(200).json({
