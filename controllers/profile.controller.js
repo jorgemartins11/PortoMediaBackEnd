@@ -33,25 +33,25 @@ exports.editProfile = (req, res) => {
     });
 };
 
-exports.getUserFavoritesAndOutdoors = (req, res) => {
-    let favorites = getUserFavorites(req, res);
-    let rentOutdoors = getUserRentOutdoors(req, res);
+// exports.getUserFavoritesAndOutdoors = (req, res) => {
+//     let favorites = getUserFavorites(req, res);
+//     let rentOutdoors = getUserRentOutdoors(req, res);
 
-    //! ---------------------------------------
+//     //! ---------------------------------------
 
-    res.status(200).send(favorites);
-};
+//     res.status(200).send(favorites);
+// };
 
-function getUserFavorites(req, res) {
+exports.getUserFavorites = (req, res) => {
     Favorite.findAll({
         where: {
             userId: req.loggedUserId
         }
     }).then((result) => {
-        return result;
+        res.status(200).send(result);
     }).catch((error) => {
         res.status(400).send(error);
-    })
+    });
 };
 
 function getUserRentOutdoors(req, res) {
