@@ -18,17 +18,17 @@ router.route('/').get(function (req, res) {
     };
 });
 
-router.route('/favorite/:outdoorId').post(function (req, res) {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        authController.verifyToken(req, res);
-        if (req.loggedUserId != null) {
-            outdoorController.addAndRemoveFavorite();
-        };
-    } else {
-        res.status(400).send(errors);
-    };
-});
+// router.route('/favorite/:outdoorId').post(function (req, res) {
+//     const errors = validationResult(req);
+//     if (errors.isEmpty()) {
+//         authController.verifyToken(req, res);
+//         if (req.loggedUserId != null) {
+//             outdoorController.addAndRemoveFavorite();
+//         };
+//     } else {
+//         res.status(400).send(errors);
+//     };
+// });
 
 router.route('/:outdoorId').post([
     body("name"),
