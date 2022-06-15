@@ -33,6 +33,18 @@ exports.editProfile = (req, res) => {
     });
 };
 
+exports.getLoggedUser = (req, res) => {
+    User.findOne({
+        where: {
+            id: req.loggedUserId
+        }
+    }).then((result) => {
+        res.status(200).send(result);
+    }).catch((error) => {
+        res.status(400).send(error);
+    })
+};
+
 // exports.getUserFavoritesAndOutdoors = (req, res) => {
 //     let favorites = getUserFavorites(req, res);
 //     let rentOutdoors = getUserRentOutdoors(req, res);

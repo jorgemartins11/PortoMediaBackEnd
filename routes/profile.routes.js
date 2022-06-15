@@ -36,7 +36,19 @@ router.route('/').get(function (req, res) {
     };
 });
 
-router.route('/favorites').get(function(req, res) {
+router.route('/user').get(function (req, res) {
+    const errors = validationResult(req, re);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            profileController.getLoggedUser(req, res);
+        }
+    } else {
+        res.status(400).send(errrors);
+    };
+});
+
+router.route('/favorites').get(function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
