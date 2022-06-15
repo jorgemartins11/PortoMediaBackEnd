@@ -37,7 +37,7 @@ router.route('/').get(function (req, res) {
 });
 
 router.route('/user').get(function (req, res) {
-    const errors = validationResult(req, re);
+    const errors = validationResult(req, res);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {

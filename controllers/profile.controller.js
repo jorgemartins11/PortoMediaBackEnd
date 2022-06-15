@@ -11,7 +11,6 @@ const outdoorModel = require('../models/outdoor.model');
 const Outdoor = outdoorModel.Outdoor;
 
 const favoritesModel = require('../models/favorites.model');
-const res = require('express/lib/response');
 const Favorite = favoritesModel.Favorite;
 
 exports.editProfile = (req, res) => {
@@ -42,17 +41,8 @@ exports.getLoggedUser = (req, res) => {
         res.status(200).send(result);
     }).catch((error) => {
         res.status(400).send(error);
-    })
+    });
 };
-
-// exports.getUserFavoritesAndOutdoors = (req, res) => {
-//     let favorites = getUserFavorites(req, res);
-//     let rentOutdoors = getUserRentOutdoors(req, res);
-
-//     //! ---------------------------------------
-
-//     res.status(200).send(favorites);
-// };
 
 exports.getUserFavorites = (req, res) => {
     Favorite.findAll({
@@ -66,7 +56,7 @@ exports.getUserFavorites = (req, res) => {
     });
 };
 
-function getUserRentOutdoors(req, res) {
+exports.getUserRentOutdoors = (req, res) => {
     UserRequest.findAll({
         where: {
             userId: req.loggedUserId
