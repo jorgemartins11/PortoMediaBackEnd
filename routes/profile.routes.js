@@ -44,7 +44,7 @@ router.route('/user').get(function (req, res) {
             profileController.getLoggedUser(req, res);
         }
     } else {
-        res.status(400).send(errrors);
+        res.status(400).send(errors);
     };
 });
 
