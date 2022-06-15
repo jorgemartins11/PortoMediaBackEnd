@@ -48,6 +48,8 @@ exports.logIn = async (req, res) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            phone_number: user.phone_number,
+            company: user.company,
             accessToken: token
         });
     } catch (err) {
