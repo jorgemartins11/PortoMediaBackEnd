@@ -33,8 +33,7 @@ const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.P
 class CurrentEmail extends Model {}
 
 CurrentEmail.init({
-    email: DataTypes.STRING
-}, {
+    email: DataTypes.STRING,
     timestamps: false
 }, {
     sequelize,
