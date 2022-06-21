@@ -56,12 +56,12 @@ exports.getOutdoors = (req, res) => {
     })
 };
 
-exports.changeOutdoorVisibility = (req, res, visibility) => {
+exports.changeOutdoorVisibility = (req, res) => {
     Outdoor.update({
-        visible: parseInt(visibility)
+        visible: parseInt(req.body.visible)
     }, {
         where: {
-            id: req.body.id
+            id: req.params.outdoorId
         }
     }).then((result) => {
         res.status(200).json({

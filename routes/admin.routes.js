@@ -43,7 +43,7 @@ router.route('/changeEmail').put([
     };
 });
 
-router.route('/outdoors').get(function(req, res) {
+router.route('/outdoors').get(function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         adminController.getOutdoors(req, res);
@@ -51,5 +51,17 @@ router.route('/outdoors').get(function(req, res) {
         res.status(400).send(errors);
     };
 });
+
+router.route('/outdoors/:outdoorId').put(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            adminController.changeOutdoorVisibility(req, res);
+        };
+    } else {
+        res.status(400).send(error);
+    };
+})
 
 module.exports = router;
