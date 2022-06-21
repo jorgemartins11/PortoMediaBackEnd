@@ -38,6 +38,16 @@ exports.getCurrentEmail = (req, res) => {
     });
 };
 
+exports.createCurrentEmail = (req, res) => {
+    CurrentEmail.create({
+        email: req.body.email
+    }).then((result) => {
+        res.status(200).send(result);
+    }).catch((error) =>{
+        res.status(200).send(error);
+    })
+}
+
 exports.getOutdoors = (req, res) => {
     Outdoor.findAll().then((result) => {
         res.status(200).json(result);

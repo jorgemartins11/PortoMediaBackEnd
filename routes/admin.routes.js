@@ -24,13 +24,20 @@ router.route('/changeEmail').put([
     } else {
         res.status(400).send(errors);
     };
-}).get(function(req, res) {
+}).get(function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
         if (req.loggedUserId != null) {
             adminController.getCurrentEmail(req, res);
         };
+    } else {
+        res.status(400).send(error);
+    };
+}).post(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        adminController.createCurrentEmail(req, res);
     } else {
         res.status(400).send(error);
     };

@@ -34,7 +34,6 @@ class CurrentEmail extends Model {}
 
 CurrentEmail.init({
     email: DataTypes.STRING,
-    timestamps: false
 }, {
     sequelize,
     modelName: 'current_email'
