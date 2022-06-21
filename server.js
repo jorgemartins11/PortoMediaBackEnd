@@ -11,6 +11,7 @@ const profileRouter = require('./routes/profile.routes');
 const contactsRouter = require('./routes/contacts.routes');
 const outdoorsRouter = require('./routes/outdoors.routes');
 const homeRouter = require('./routes/home.routes');
+const adminRouter = require('./routes/admin.routes');
 
 const outdoorModel = require('./models/outdoor.model');
 const requestModel = require('./models/request.model');
@@ -29,6 +30,7 @@ app.use('/', homeRouter);
 app.use('/profile', profileRouter);
 app.use('/contacts', contactsRouter);
 app.use('/outdoors', outdoorsRouter);
+app.use('/admin', adminRouter);
 
 app.listen(port, () => {
     console.log('Server Running at http://localhost:' + port);
