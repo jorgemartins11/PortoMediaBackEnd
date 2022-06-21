@@ -43,4 +43,13 @@ router.route('/changeEmail').put([
     };
 });
 
+router.route('/outdoors').get(function(req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        adminController.getOutdoors(req, res);
+    } else {
+        res.status(400).send(errors);
+    };
+});
+
 module.exports = router;
