@@ -4,6 +4,9 @@ const CurrentEmail = currentEmailModel.CurrentEmail;
 const outdoorModel = require('../models/outdoor.model');
 const Outdoor = outdoorModel.Outdoor;
 
+const requestModel = require('../models/request.model');
+const Request = requestModel.Request;
+
 /**
  *! Available & Visible  
  *? 1 - True
@@ -73,5 +76,7 @@ exports.changeOutdoorVisibility = (req, res) => {
 };
 
 exports.AddAcceptedRequest = (req, res) => {
-    
+    Request.create({
+        
+    })
 };

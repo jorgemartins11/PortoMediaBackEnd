@@ -32,18 +32,7 @@ const transporter = nodemailer.createTransport({
 
 //* Function for the user to make a "lead"
 exports.makeRequest = async (req, res) => {
-    Request.create({
-        message: req.body.message,
-        company: req.body.company,
-        outdoorId: req.params.outdoorId
-    }).then((result) => {
-        UserRequest.create({
-            userId: req.loggedUserId,
-            requestId: result.id
-        });
-
-        let outdoor = Outdoor.findOne({where: {id: req.params.outdoorId}});
-
+    try {
         transporter.use('compile', hbs({
             viewEngine: {
                 extname: '.handlebars',
@@ -74,9 +63,58 @@ exports.makeRequest = async (req, res) => {
         res.status(200).json({
             message: "Orçamento pedido com sucesso!"
         })
-    }).catch((error) => {
+    } catch (error) {
         res.status(400).send(error);
-    });
+    }
+    // Request.create({
+    //     message: req.body.message,
+    //     company: req.body.company,
+    //     outdoorId: req.params.outdoorId
+    // }).then((result) => {
+    //     UserRequest.create({
+    //         userId: req.loggedUserId,
+    //         requestId: result.id
+    //     });
+
+    //     let outdoor = Outdoor.findOne({
+    //         where: {
+    //             id: req.params.outdoorId
+    //         }
+    //     });
+
+    //     transporter.use('compile', hbs({
+    //         viewEngine: {
+    //             extname: '.handlebars',
+    //             layoutsDir: 'views/',
+    //             defaultLayout: 'lead'
+    //         },
+    //         viewPath: "views",
+    //         extName: ".handlebars"
+    //     }));
+
+    //     //! Mudar variavéis
+    //     const mailSent = transporter.sendMail({
+    //         subject: 'Lead Porto Media: ' + req.body.company,
+    //         from: SMTP_CONFIG.user,
+    //         to: "jorge.daniel11@outlook.com",
+    //         template: "lead",
+    //         context: {
+    //             client_name: req.body.name,
+    //             client_contact: req.body.contact,
+    //             client_email: req.body.email,
+    //             client_message: req.body.message,
+    //             outdoor_id: outdoor.name
+    //         }
+    //     });
+
+    //     console.log(mailSent);
+
+    //     res.status(200).json({
+    //         message: "Orçamento pedido com sucesso!"
+    //     })
+    // }).catch((error) => {
+    //     res.status(400).send(error);
+    // });
 };
 
 //* Function for the user to make contact
