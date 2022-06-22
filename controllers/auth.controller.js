@@ -50,6 +50,7 @@ exports.logIn = async (req, res) => {
             email: user.email,
             phone_number: user.phone_number,
             company: user.company,
+            user_type: user.user_type,
             accessToken: token
         });
     } catch (err) {
