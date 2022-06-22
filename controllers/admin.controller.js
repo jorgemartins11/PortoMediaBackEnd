@@ -104,7 +104,7 @@ exports.changeRentStatus = (req, res) => {
         status: req.body.status
     },{
         where: {
-            id: requestId
+            id: req.params.requestId
         }
     }).then((result) => {
         res.status(200).json({
