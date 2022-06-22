@@ -33,6 +33,12 @@ const transporter = nodemailer.createTransport({
 //* Function for the user to make a "lead"
 exports.makeRequest = async (req, res) => {
     try {
+        let outdoor = Outdoor.findOne({
+            where: {
+                id: req.params.outdoorId
+            }
+        });
+
         transporter.use('compile', hbs({
             viewEngine: {
                 extname: '.handlebars',
@@ -53,8 +59,9 @@ exports.makeRequest = async (req, res) => {
                 client_name: req.body.name,
                 client_contact: req.body.contact,
                 client_email: req.body.email,
+                client_company: req.body.company,
                 client_message: req.body.message,
-                outdoor_id: outdoor.name
+                outdoor_id: outdoor.number
             }
         });
 
@@ -64,7 +71,9 @@ exports.makeRequest = async (req, res) => {
             message: "Orçamento pedido com sucesso!"
         })
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({
+            message: "Erro: " + error
+        });
     }
     // Request.create({
     //     message: req.body.message,

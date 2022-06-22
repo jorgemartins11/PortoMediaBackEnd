@@ -33,9 +33,9 @@ const sequelize = new Sequelize.Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.P
 class Request extends Model {}
 
 Request.init({
-    message: DataTypes.STRING,
     company: DataTypes.STRING,
-    outdoorId: DataTypes.INTEGER,
+    userEmail: DataTypes.STRING,
+    outdoorNumber: DataTypes.INTEGER,
     monthly_price: DataTypes.DOUBLE,
     begin_date: DataTypes.STRING,
     end_date: DataTypes.STRING,

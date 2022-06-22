@@ -77,6 +77,16 @@ exports.changeOutdoorVisibility = (req, res) => {
 
 exports.AddAcceptedRequest = (req, res) => {
     Request.create({
-        
+        company: req.body.company,
+        userEmail: req.body.userEmail,
+        outdoorNumber: req.body.outdoorNumber,
+        monthly_price: req.body.monthly_price,
+        begin_date: req.body.begin_date,
+        end_date: req.body.end_date,
+        status: "Aceite"
+    }).then((result) => {
+        res.status(200).send(result);
+    }).catch((error) => {
+        res.status(400).send(error);
     })
 };
