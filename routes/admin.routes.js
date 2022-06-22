@@ -93,7 +93,9 @@ router.route('/request').post([
     };
 });
 
-router.route('/request/:requestId').put([], function (req, res) {
+router.route('/request/:requestId').put([
+    body("status")
+], function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         authController.verifyToken(req, res);
