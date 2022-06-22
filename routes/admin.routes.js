@@ -62,6 +62,25 @@ router.route('/outdoors/:outdoorId').put(function (req, res) {
     } else {
         res.status(400).send(error);
     };
-})
+});
+
+router.route('/request').post([
+    body("company").notEmpty(),
+    body("userEmail", 'O email que inseriu não é válido!').isEmail().notEmpty(),
+    body('outdoorNumber').isNumeric().notEmpty(),
+    body('monthly_price').isNumeric().notEmpty(),
+    body("begin_date").notEmpty(),
+    body('end_date').notEmpty()
+], function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            adminController.AddAcceptedRequest(req, res);
+        };
+    } else {
+        res.status(400).send(error);
+    };
+});
 
 module.exports = router;
