@@ -46,7 +46,7 @@ exports.createCurrentEmail = (req, res) => {
         email: req.body.email
     }).then((result) => {
         res.status(200).send(result);
-    }).catch((error) =>{
+    }).catch((error) => {
         res.status(200).send(error);
     })
 }
@@ -90,3 +90,11 @@ exports.AddAcceptedRequest = (req, res) => {
         res.status(400).send(error);
     })
 };
+
+exports.getAllRequest = (req, res) => {
+    Request.findAll().then((result) => {
+        res.status(200).send(result);
+    }).catch((error) => {
+        res.status(400).send(error);
+    })
+}
