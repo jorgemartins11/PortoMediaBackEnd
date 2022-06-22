@@ -97,4 +97,20 @@ exports.getAllRequest = (req, res) => {
     }).catch((error) => {
         res.status(400).send(error);
     })
-}
+};
+
+exports.changeRentStatus = (req, res) => {
+    Request.update({
+        status: req.body.status
+    },{
+        where: {
+            id: requestId
+        }
+    }).then((result) => {
+        res.status(200).json({
+            message: "Estado do aluguer atualizado!"
+        })
+    }).catch((error) => {
+        res.status(400).send(error);
+    });
+};
