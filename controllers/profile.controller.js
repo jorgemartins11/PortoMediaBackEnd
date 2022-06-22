@@ -56,13 +56,18 @@ exports.getUserFavorites = (req, res) => {
     });
 };
 
-exports.getUserRentOutdoors = (req, res) => {
-    UserRequest.findAll({
+exports.getUserRentOutdoors = async (req, res) => {
+    const user = await User.findOne({
         where: {
-            userId: req.loggedUserId
+            id: req.loggedUserId
+        }
+    });
+    Request.findAll({
+        where: {
+            userEmail: user.email
         }
     }).then((result) => {
-        return result;
+        res.status(200).send(result);
     }).catch((error) => {
         res.status(400).send(error);
     })

@@ -60,4 +60,16 @@ router.route('/favorites').get(function (req, res) {
     };
 });
 
+router.route('/rents').get(function (req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        authController.verifyToken(req, res);
+        if (req.loggedUserId != null) {
+            profileController.getUserRentOutdoors(req, res);
+        }
+    } else {
+        res.status(400).send(errors);
+    };
+})
+
 module.exports = router;
